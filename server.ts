@@ -1,18 +1,44 @@
+import mongoose from "mongoose";
 /**
  * @file Implements an Express Node HTTP server.
  */
-import express, {Request, Response} from 'express';
-const cors = require('cors')
+import express, { Request, Response } from "express";
+import UserControllerI from "./interfaces/UserController";
+import UserController from "./controllers/UserController";
+import UserDaoI from "./interfaces/UserDao";
+import UserDao from "./daos/UserDao";
+import TuitDaoI from "./interfaces/TuitDao";
+import TuitDao from "./daos/TuitDao";
+import TuitControllerI from "./interfaces/TuitController";
+import TuitController from "./controllers/TuitController";
+
+const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  autoIndex: false,
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  family: 4,
+};
+mongoose.connect("mongodb://localhost:27017/fse", options);
 
-app.get('/', (req: Request, res: Response) =>
-    res.send('Welcome to Foundation of Software Engineering!!!!'));
+const userDao: UserDaoI = new UserDao();
+const tuitDao: TuitDaoI = new TuitDao();
+const userController: UserControllerI = new UserController(app, userDao);
+const tuitController: TuitControllerI = new TuitController(app, tuitDao);
 
-app.get('/hello', (req: Request, res: Response) =>
-    res.send('Welcome to Foundation of Software Engineering!'));
+app.get("/", (req: Request, res: Response) =>
+  res.send("Welcome to Foundation of Software Engineering!!!!")
+);
 
+app.get("/hello", (req: Request, res: Response) =>
+  res.send("Welcome to Foundation of Software Engineering!")
+);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.
