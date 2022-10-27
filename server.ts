@@ -3,14 +3,14 @@ import mongoose from "mongoose";
  * @file Implements an Express Node HTTP server.
  */
 import express, { Request, Response } from "express";
-import UserControllerI from "./interfaces/UserController";
+import UserControllerI from "./interfaces/Users/UserController";
 import UserController from "./controllers/UserController";
-import UserDaoI from "./interfaces/UserDao";
+import UserDaoI from "./interfaces/Users/UserDao";
 import UserDao from "./daos/UserDao";
-import TuitDaoI from "./interfaces/TuitDao";
-import TuitDao from "./daos/TuitDao";
-import TuitControllerI from "./interfaces/TuitController";
+import TuitControllerI from "./interfaces/Tuits/TuitController";
 import TuitController from "./controllers/TuitController";
+import LikeController from "./controllers/LikeController";
+import FollowController from "./controllers/FollowController";
 
 const cors = require("cors");
 const app = express();
@@ -25,12 +25,16 @@ const options = {
   socketTimeoutMS: 45000,
   family: 4,
 };
-mongoose.connect("mongodb://localhost:27017/fse", options);
+mongoose.connect(
+  "mongodb+srv://Kaushik:Boora@cluster0.sebdn.mongodb.net/?retryWrites=true&w=majority",
+  options
+);
 
 const userDao: UserDaoI = new UserDao();
-const tuitDao: TuitDaoI = new TuitDao();
 const userController: UserControllerI = new UserController(app, userDao);
-const tuitController: TuitControllerI = new TuitController(app, tuitDao);
+const tuitController: TuitControllerI = TuitController.getInstance(app);
+const likesController = LikeController.getInstance(app);
+const followController = FollowController.getInstance(app);
 
 app.get("/", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!!!!")
