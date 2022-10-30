@@ -34,8 +34,6 @@ export default class TuitController implements TuitControllerI {
    */
   public static getInstance = (app: Express): TuitController => {
     if (TuitController.tuitController === null) {
-      console.log("Initialized");
-
       TuitController.tuitController = new TuitController();
       app.get("/api/tuits", TuitController.tuitController.findAllTuits);
       app.get(
@@ -79,6 +77,7 @@ export default class TuitController implements TuitControllerI {
       .then((tuits: Tuit[]) => res.json(tuits));
 
   /**
+   * Retreive all the tuits bt id
    * @param {Request} req Represents request from client, including path
    * parameter tid identifying the primary key of the tuit to be retrieved
    * @param {Response} res Represents response to client, including the
@@ -90,6 +89,7 @@ export default class TuitController implements TuitControllerI {
       .then((tuit: Tuit) => res.json(tuit));
 
   /**
+   * Creates a Tuit on the database.
    * @param {Request} req Represents request from client, including body
    * containing the JSON object for the new tuit to be inserted in the
    * database
@@ -103,6 +103,7 @@ export default class TuitController implements TuitControllerI {
       .then((tuit: Tuit) => res.json(tuit));
 
   /**
+   * Update a Tuit Record.
    * @param {Request} req Represents request from client, including path
    * parameter tid identifying the primary key of the tuit to be modified
    * @param {Response} res Represents response to client, including status
@@ -114,6 +115,7 @@ export default class TuitController implements TuitControllerI {
       .then((status) => res.send(status));
 
   /**
+   * Remove a Tuit Record.
    * @param {Request} req Represents request from client, including path
    * parameter tid identifying the primary key of the tuit to be removed
    * @param {Response} res Represents response to client, including status

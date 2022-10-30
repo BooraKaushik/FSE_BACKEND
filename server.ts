@@ -11,11 +11,15 @@ import TuitControllerI from "./interfaces/Tuits/TuitController";
 import TuitController from "./controllers/TuitController";
 import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
-
+import BookmarkController from "./controllers/BookmarkController";
+import MessageController from "./controllers/MessageController";
+// Pipline that an incomming request must go through to be parsed to JSON
 const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+//Connecting to MongoDB
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -30,12 +34,16 @@ mongoose.connect(
   options
 );
 
+// Instansiating all the controllers.
 const userDao: UserDaoI = new UserDao();
 const userController: UserControllerI = new UserController(app, userDao);
 const tuitController: TuitControllerI = TuitController.getInstance(app);
 const likesController = LikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
+const bookmarkController = BookmarkController.getInstance(app);
+const messageCintroller = MessageController.getInstance(app);
 
+// Testing APIs
 app.get("/", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!!!!")
 );
