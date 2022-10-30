@@ -7,6 +7,8 @@ branch-defaults:
   a2:
     environment: my-node-express-project-env
     group_suffix: null
+  a2Update:
+    environment: my-node-express-project-env
 global:
   application_name: software-engineering-node
   branch: null
