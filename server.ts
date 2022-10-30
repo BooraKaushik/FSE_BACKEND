@@ -57,4 +57,4 @@ app.get("/hello", (req: Request, res: Response) =>
  */
 const PORT = 4000;
 app.listen(process.env.PORT || PORT);
-console.log("Running on Port " + process.env.PORT || PORT);
+console.log("Running on Port " + (process.env.PORT || PORT));
