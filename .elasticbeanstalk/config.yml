@@ -1,14 +1,11 @@
 branch-defaults:
-  a1:
-    environment: null
-    group_suffix: null
-  a1_section_3:
-    environment: Fseassignment-env
-  a2:
-    environment: my-node-express-project-env
-    group_suffix: null
   a2Update:
     environment: my-node-express-project-env
+    group_suffix: null
+environment-defaults:
+  my-node-express-project-env:
+    branch: null
+    repository: null
 global:
   application_name: software-engineering-node
   branch: null
