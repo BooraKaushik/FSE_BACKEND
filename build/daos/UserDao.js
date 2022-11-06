@@ -19,6 +19,17 @@ const UserModel_1 = __importDefault(require("../mongoose/User/UserModel"));
  * @property {UserDao} userDao Private single instance of UserDao
  */
 class UserDao {
+    constructor() {
+        /**
+         * Removes all users from the database. Useful for testing
+         * @returns Promise To be notified when all users are removed from the
+         * database
+         */
+        this.deleteAllUsers = () => __awaiter(this, void 0, void 0, function* () { return UserModel_1.default.deleteMany({}); });
+        this.deleteUsersByUsername = (username) => __awaiter(this, void 0, void 0, function* () { return UserModel_1.default.deleteMany({ username }); });
+        this.findUserByCredentials = (username, password) => __awaiter(this, void 0, void 0, function* () { return UserModel_1.default.findOne({ username: username, password: password }); });
+        this.findUserByUsername = (username) => __awaiter(this, void 0, void 0, function* () { return UserModel_1.default.findOne({ username }); });
+    }
     /**
      * Uses UserModel to retrieve all user documents from users collection
      * @returns Promise To be notified when the users are retrieved from

@@ -68,6 +68,22 @@ class UserController {
         this.updateUser = (req, res) => this.userDao
             .updateUser(req.params.userid, req.body)
             .then((status) => res.json(status));
+        /**
+         * Removes all user instances from the database. Useful for testing
+         * @param {Request} req Represents request from client
+         * @param {Response} res Represents response to client, including status
+         * on whether deleting all users was successful or not
+         */
+        this.deleteAllUsers = (req, res) => this.userDao.deleteAllUsers().then((status) => res.send(status));
+        this.deleteUsersByUsername = (req, res) => this.userDao
+            .deleteUsersByUsername(req.params.username)
+            .then((status) => res.send(status));
+        this.login = (req, res) => this.userDao
+            .findUserByCredentials(req.body.username, req.body.password)
+            .then((user) => {
+            res.json(user);
+        });
+        this.register = (req, res) => this.userDao.findUserByUsername(req.body.username).then((user) => { });
         this.app = app;
         this.userDao = userDao;
         this.app.get("/api/users", this.findAllUsers);

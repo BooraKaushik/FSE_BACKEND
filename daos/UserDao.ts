@@ -12,7 +12,6 @@ import UserDaoI from "../interfaces/Users/UserDao";
  * @property {UserDao} userDao Private single instance of UserDao
  */
 export default class UserDao implements UserDaoI {
-  
   /**
    * Uses UserModel to retrieve all user documents from users collection
    * @returns Promise To be notified when the users are retrieved from
@@ -56,4 +55,23 @@ export default class UserDao implements UserDaoI {
   async createUser(user: User): Promise<User> {
     return await UserModel.create(user);
   }
+
+  /**
+   * Removes all users from the database. Useful for testing
+   * @returns Promise To be notified when all users are removed from the
+   * database
+   */
+  deleteAllUsers = async (): Promise<any> => UserModel.deleteMany({});
+
+  deleteUsersByUsername = async (username: string): Promise<any> =>
+    UserModel.deleteMany({ username });
+
+  findUserByCredentials = async (
+    username: string,
+    password: string
+  ): Promise<any> =>
+    UserModel.findOne({ username: username, password: password });
+
+  findUserByUsername = async (username: string): Promise<any> =>
+    UserModel.findOne({ username });
 }
