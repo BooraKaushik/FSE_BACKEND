@@ -91,6 +91,13 @@ class UserController {
         this.app.post("/api/users", this.createUser);
         this.app.delete("/api/users/:userid", this.deleteUser);
         this.app.put("/api/users/:userid", this.updateUser);
+        this.app.delete("/api/users", this.deleteAllUsers);
+        app.post("/api/login", this.login);
+        // for testing. Not RESTful
+        this.app.get("/api/users/create", this.createUser);
+        this.app.get("/api/users/id/:uid/delete", this.deleteUser);
+        this.app.get("/api/users/username/:username/delete", this.deleteUsersByUsername);
+        this.app.get("/api/users/delete", this.deleteAllUsers);
     }
 }
 exports.default = UserController;
