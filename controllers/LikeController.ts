@@ -39,6 +39,10 @@ export default class LikeController implements LikeControllerI {
     if (LikeController.likeController === null) {
       LikeController.likeController = new LikeController();
       app.get(
+        "/api/users/:uid/dislikes",
+        LikeController.likeController.findAllTuitsDislikedByUser
+      );
+      app.get(
         "/api/users/:uid/likes",
         LikeController.likeController.findAllTuitsLikedByUser
       );
