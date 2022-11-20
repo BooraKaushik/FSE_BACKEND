@@ -14,4 +14,5 @@ export default interface LikeDao {
   countHowManyDislikedTuit(tid: any): Promise<any>;
   countHowManyLikedTuit(tid: any): Promise<any>;
   countHowManyLikedTuitToggle(tid: any): Promise<any>;
+  findAllTuitsDislikedByUser(uid: any): Promise<any>;
 }
