@@ -183,6 +183,7 @@ LikeController.likeController = null;
 LikeController.getInstance = (app) => {
     if (LikeController.likeController === null) {
         LikeController.likeController = new LikeController();
+        app.get("/api/users/:uid/dislikes", LikeController.likeController.findAllTuitsDislikedByUser);
         app.get("/api/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
         app.get("/api/likecount/:tid", LikeController.likeController.countlikesTuit);
         app.get("/api/dislikecount/:tid", LikeController.likeController.countDislikesTuit);
