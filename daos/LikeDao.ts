@@ -39,6 +39,13 @@ export default class LikeDao implements LikeDaoI {
    */
   findAllTuitsLikedByUser = async (uid: any) =>
     LikeModel.find({ likedBy: uid })
+      .populate({
+        path: "tuit",
+        populate: {
+          path: "postedBy",
+        },
+      })
+      .exec();
   /**
    * Creates a Like of the User to a particular tuit on the Database.
    * @param uid Id of the User
