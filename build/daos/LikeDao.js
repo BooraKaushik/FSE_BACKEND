@@ -32,7 +32,22 @@ class LikeDao {
          * @returns a list of Tuit with the User Information Populated
          */
         this.findAllTuitsLikedByUser = (uid) => __awaiter(this, void 0, void 0, function* () {
-            return LikeModel_1.default.find({ likedBy: uid })
+            return LikeModel_1.default.find({ likedBy: uid, liked: true })
+                .populate({
+                path: "tuit",
+                populate: {
+                    path: "postedBy",
+                },
+            })
+                .exec();
+        });
+        /**
+         * Extracts all the tuits disliked by a particular User.
+         * @param uid Id of the User
+         * @returns a list of Tuit with the User Information Populated
+         */
+        this.findAllTuitsDislikedByUser = (uid) => __awaiter(this, void 0, void 0, function* () {
+            return LikeModel_1.default.find({ likedBy: uid, liked: false })
                 .populate({
                 path: "tuit",
                 populate: {
