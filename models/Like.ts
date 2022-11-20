@@ -11,9 +11,11 @@ import User from "./User";
  * as in a user likes a tuit
  * @property {Tuit} tuit Tuit being liked
  * @property {User} likedBy User liking the tuit
+ * @property {liked} liked represents if a user has liked or disliked a tuit
  */
 
 export default interface Like {
   tuit: Tuit;
   likedBy: User;
+  liked: boolean;
 }

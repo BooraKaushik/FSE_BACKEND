@@ -11,6 +11,7 @@ const LikeSchema = new mongoose.Schema(
   {
     tuit: { type: Schema.Types.ObjectId, ref: "TuitModel" },
     likedBy: { type: Schema.Types.ObjectId, ref: "UserModel" },
+    liked: { type: Boolean },
   },
   { collection: "likes" }
 );

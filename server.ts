@@ -13,10 +13,17 @@ import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
+import AuthenticationController from "./controllers/auth-controller";
 // Pipline that an incomming request must go through to be parsed to JSON
 const cors = require("cors");
+const session = require("express-session");
+
 const app = express();
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+app.use(cors(corsConfig));
 app.use(express.json());
 
 //Connecting to MongoDB
@@ -35,8 +42,22 @@ mongoose.connect(
 );
 
 // Instansiating all the controllers.
-const userDao: UserDaoI = new UserDao();
-const userController: UserControllerI = new UserController(app, userDao);
+let sess = {
+  secret: "abcc",
+  cookie: {
+    secure: false,
+  },
+};
+
+if (process.env.ENV === "PRODUCTION") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
+
+app.use(session(sess));
+const authController = AuthenticationController(app);
+const userDao: UserDaoI = UserDao.getInstance();
+const userController: UserControllerI = UserController.getInstance(app);
 const tuitController: TuitControllerI = TuitController.getInstance(app);
 const likesController = LikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
@@ -57,4 +78,5 @@ app.get("/hello", (req: Request, res: Response) =>
  */
 const PORT = 4000;
 app.listen(process.env.PORT || PORT);
+
 console.log("Running on Port " + (process.env.PORT || PORT));
