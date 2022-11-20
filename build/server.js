@@ -15,10 +15,16 @@ const LikeController_1 = __importDefault(require("./controllers/LikeController")
 const FollowController_1 = __importDefault(require("./controllers/FollowController"));
 const BookmarkController_1 = __importDefault(require("./controllers/BookmarkController"));
 const MessageController_1 = __importDefault(require("./controllers/MessageController"));
+const auth_controller_1 = __importDefault(require("./controllers/auth-controller"));
 // Pipline that an incomming request must go through to be parsed to JSON
 const cors = require("cors");
+const session = require("express-session");
 const app = (0, express_1.default)();
-app.use(cors());
+const corsConfig = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsConfig));
 app.use(express_1.default.json());
 //Connecting to MongoDB
 const options = {
@@ -32,8 +38,20 @@ const options = {
 };
 mongoose_1.default.connect("mongodb+srv://Kaushik:Boora@cluster0.sebdn.mongodb.net/?retryWrites=true&w=majority", options);
 // Instansiating all the controllers.
-const userDao = new UserDao_1.default();
-const userController = new UserController_1.default(app, userDao);
+let sess = {
+    secret: "abcc",
+    cookie: {
+        secure: false,
+    },
+};
+if (process.env.ENV === "PRODUCTION") {
+    app.set("trust proxy", 1); // trust first proxy
+    sess.cookie.secure = true; // serve secure cookies
+}
+app.use(session(sess));
+const authController = (0, auth_controller_1.default)(app);
+const userDao = UserDao_1.default.getInstance();
+const userController = UserController_1.default.getInstance(app);
 const tuitController = TuitController_1.default.getInstance(app);
 const likesController = LikeController_1.default.getInstance(app);
 const followController = FollowController_1.default.getInstance(app);

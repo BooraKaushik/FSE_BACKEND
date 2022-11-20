@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,9 +40,10 @@ class TuitController {
          * @param {Response} res Represents response to client, including the
          * body formatted as JSON arrays containing the tuit objects
          */
-        this.findAllTuits = (req, res) => TuitController.tuitDao
-            .findAllTuits()
-            .then((tuits) => res.json(tuits));
+        this.findAllTuits = (req, res) => TuitController.tuitDao.findAllTuits().then((tuits) => {
+            res.json(tuits);
+            console.log(tuits);
+        });
         /**
          * Retrieves all tuits from the database for a particular user and returns
          * an array of tuits.
@@ -41,9 +51,14 @@ class TuitController {
          * @param {Response} res Represents response to client, including the
          * body formatted as JSON arrays containing the tuit objects
          */
-        this.findAllTuitsByUser = (req, res) => TuitController.tuitDao
-            .findAllTuitsByUser(req.params.uid)
-            .then((tuits) => res.json(tuits));
+        this.findAllTuitsByUser = (req, res) => {
+            let userId = req.params.uid === "me" && req.session["profile"]
+                ? req.session["profile"]._id
+                : req.params.uid;
+            TuitController.tuitDao.findAllTuitsByUser(userId).then((tuits) => {
+                res.json(tuits);
+            });
+        };
         /**
          * Retreive all the tuits bt id
          * @param {Request} req Represents request from client, including path
@@ -51,9 +66,11 @@ class TuitController {
          * @param {Response} res Represents response to client, including the
          * body formatted as JSON containing the tuit that matches the user ID
          */
-        this.findTuitById = (req, res) => TuitController.tuitDao
-            .findTuitById(req.params.uid)
-            .then((tuit) => res.json(tuit));
+        this.findTuitById = (req, res) => {
+            TuitController.tuitDao.findTuitById(req.params.uid).then((tuit) => {
+                res.json(tuit);
+            });
+        };
         /**
          * Creates a Tuit on the database.
          * @param {Request} req Represents request from client, including body
@@ -63,9 +80,16 @@ class TuitController {
          * body formatted as JSON containing the new tuit that was inserted in the
          * database
          */
-        this.createTuit = (req, res) => TuitController.tuitDao
-            .createTuitByUser(req.params.uid, req.body)
-            .then((tuit) => res.json(tuit));
+        this.createTuit = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            let userId = req.params.uid === "me" && req.session["profile"]
+                ? req.session["profile"]._id
+                : req.params.uid;
+            TuitController.tuitDao
+                .createTuitByUser(userId, req.body)
+                .then((tuit) => {
+                res.json(tuit);
+            });
+        });
         /**
          * Update a Tuit Record.
          * @param {Request} req Represents request from client, including path
@@ -83,9 +107,11 @@ class TuitController {
          * @param {Response} res Represents response to client, including status
          * on whether deleting a user was successful or not
          */
-        this.deleteTuit = (req, res) => TuitController.tuitDao
-            .deleteTuit(req.params.uid)
-            .then((status) => res.send(status));
+        this.deleteTuit = (req, res) => {
+            TuitController.tuitDao
+                .deleteTuit(req.params.uid)
+                .then((status) => res.send(status));
+        };
     }
 }
 exports.default = TuitController;

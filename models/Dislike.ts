@@ -1,21 +1,19 @@
 /**
  * @file Declares Like data type representing relationship between
- * users and tuits, as in user likes a tuit
+ * users and tuits, as in user dislikes a tuit
  */
 
 import Tuit from "./Tuit";
 import User from "./User";
 
 /**
- * @typedef Like Represents likes relationship between a user and a tuit,
+ * @typedef Dislike Represents likes relationship between a user and a tuit,
  * as in a user likes a tuit
  * @property {Tuit} tuit Tuit being liked
  * @property {User} likedBy User liking the tuit
- * @property {liked} liked represents if a user has liked or disliked a tuit
  */
 
-export default interface Like {
+export default interface Dislike {
   tuit: Tuit;
-  likedBy: User;
-  liked: boolean;
+  dislikedBy: User;
 }
