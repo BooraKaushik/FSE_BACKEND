@@ -51,7 +51,7 @@ let sess = {
 
 if (process.env.ENV === "PRODUCTION") {
   app.set("trust proxy", 1); // trust first proxy
-  sess.cookie.secure = true; // serve secure cookies
+  sess.cookie.secure = false; // serve secure cookies
 }
 
 app.use(session(sess));
