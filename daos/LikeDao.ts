@@ -38,7 +38,22 @@ export default class LikeDao implements LikeDaoI {
    * @returns a list of Tuit with the User Information Populated
    */
   findAllTuitsLikedByUser = async (uid: any) =>
-    LikeModel.find({ likedBy: uid })
+    LikeModel.find({ likedBy: uid, liked: true })
+      .populate({
+        path: "tuit",
+        populate: {
+          path: "postedBy",
+        },
+      })
+      .exec();
+
+  /**
+   * Extracts all the tuits disliked by a particular User.
+   * @param uid Id of the User
+   * @returns a list of Tuit with the User Information Populated
+   */
+  findAllTuitsDislikedByUser = async (uid: any) =>
+    LikeModel.find({ likedBy: uid, liked: false })
       .populate({
         path: "tuit",
         populate: {
