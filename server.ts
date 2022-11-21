@@ -46,12 +46,14 @@ let sess = {
   secret: "abcc",
   cookie: {
     secure: false,
+    sameSite: "lax",
   },
 };
 
 if (process.env.ENV === "PRODUCTION") {
   app.set("trust proxy", 1); // trust first proxy
   sess.cookie.secure = true; // serve secure cookies
+  sess.cookie.sameSite = "none"; // serve secure cookies
 }
 
 app.use(session(sess));
